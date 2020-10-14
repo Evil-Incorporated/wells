@@ -63,8 +63,14 @@ def drop_columns(data):
                       'Weight of the preceding vehicle'], axis=1)
     return data
 
+def change_data(data):
+    data.loc[(data if len(data.index) < 1000 else data.sample(1000)).index, 'Speed of the vehicle (kph)'] = 500
+    # print(data['Speed of the vehicle (kph)'].head(10))
+    # print(data['Speed of the preceding vehicle'].max())
 
 if __name__ == '__main__':
     data = get_data()
     data = drop_columns(data)
+    change_data(data)
+    print(data['Speed of the vehicle (kph)'].max())
     plot_corr(data)
