@@ -56,6 +56,15 @@ def plot_corr(data):
     sns.heatmap(corr, xticklabels=corr.columns, yticklabels=corr.columns, cmap='Blues')
     plt.show()
 
+
+def drop_columns(data):
+    print(data.columns)
+    data = data.drop(['weight of vehicle in kg', 'Number of axles', 'ID of the preceding vehicle',
+                      'Weight of the preceding vehicle'], axis=1)
+    return data
+
+
 if __name__ == '__main__':
     data = get_data()
+    data = drop_columns(data)
     plot_corr(data)
