@@ -58,19 +58,37 @@ def plot_corr(data):
 
 
 def drop_columns(data):
-    print(data.columns)
     data = data.drop(['weight of vehicle in kg', 'Number of axles', 'ID of the preceding vehicle',
                       'Weight of the preceding vehicle'], axis=1)
     return data
 
 def change_data(data):
-    data.loc[(data if len(data.index) < 1000 else data.sample(1000)).index, 'Speed of the vehicle (kph)'] = 500
+    data.loc[(data if len(data.index) < 1000 else data.sample(1000)).index, 'Speed of the vehicle (kph)'] = np.nan
+    data.loc[(data if len(data.index) < 1000 else data.sample(1000)).index, 'Length of vehicle in cm'] = np.nan
+    data.loc[(data if len(data.index) < 1000 else data.sample(1000)).index, 'Length of preceding vehicle'] = np.nan
+    data.loc[(data if len(data.index) < 1000 else data.sample(1000)).index,
+             'Time gap with the preceeding vehicle in seconds'] = np.nan
+    data.loc[(data if len(data.index) < 1000 else data.sample(1000)).index, 'Speed of the preceding vehicle'] = np.nan
+    data['Speed of the vehicle (kph)'].replace(np.nan, data['Speed of the vehicle (kph)'].mean(), inplace=True)
+    data['Length of vehicle in cm'].replace(np.nan, data['Length of vehicle in cm'].mean(), inplace=True)
+    data['Length of preceding vehicle'].replace(np.nan, data['Length of preceding vehicle'].mean(), inplace=True)
+    data['Time gap with the preceeding vehicle in seconds'].replace(
+        np.nan, data['Time gap with the preceeding vehicle in seconds'].mean(), inplace=True)
+    data['Speed of the preceding vehicle'].replace(np.nan, data['Speed of the preceding vehicle'].mean(), inplace=True)
     # print(data['Speed of the vehicle (kph)'].head(10))
     # print(data['Speed of the preceding vehicle'].max())
+
+def plot_box(data):
+    # plt.boxplot(data['Speed of the vehicle (kph)'])
+    boxplot = data.boxplot(column=['Speed of the vehicle (kph)', 'Length of vehicle in cm',
+                                   'Length of preceding vehicle', 'Time gap with the preceeding vehicle in seconds',
+                                   'Speed of the preceding vehicle'])
+    plt.show()
 
 if __name__ == '__main__':
     data = get_data()
     data = drop_columns(data)
     change_data(data)
-    print(data['Speed of the vehicle (kph)'].max())
-    plot_corr(data)
+    print(data.columns)
+    plot_box(data)
+    # plot_corr(data)
