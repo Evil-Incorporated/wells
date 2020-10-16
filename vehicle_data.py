@@ -80,9 +80,7 @@ def change_data(data):
 
 def plot_box(data):
     # plt.boxplot(data['Speed of the vehicle (kph)'])
-    boxplot = data.boxplot(column=['Speed of the vehicle (kph)', 'Length of vehicle in cm',
-                                   'Length of preceding vehicle', 'Time gap with the preceeding vehicle in seconds',
-                                   'Speed of the preceding vehicle'])
+    boxplot = data.boxplot(column=['Speed of the vehicle (kph)', 'Speed of the preceding vehicle'])
     plt.show()
 
 if __name__ == '__main__':
